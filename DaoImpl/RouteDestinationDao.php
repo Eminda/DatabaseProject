@@ -6,7 +6,7 @@
  * Date: 15/12/2016
  * Time: 09:58 PM
  */
-class RouteDestination
+class RouteDestinationDao
 {
-
+    //public function function get
 }

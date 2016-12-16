@@ -6,7 +6,7 @@
  * Date: 15/12/2016
  * Time: 10:01 PM
  */
-class BookingSeat
+class BookingSeatDao
 {
     public  function insert($conn,$ticketNo,$seats){
         $sql="INSERT INTO BookingSeat VALUES (:ticket,:seatNo)";

@@ -131,7 +131,6 @@ class BusOwner extends User{
     }
 
 }
-
 class Bus extends User{
     private $regNumber;
     private $seatCount;
@@ -801,57 +800,293 @@ class Booking{
 
 
 }
-class SheduleBooking{
-    private $bus;
-    private $busjourney;
-    private $schedule;
+class SheduleBookingView{
+    private $scheduleID;
+    private $regNumber;
+    private $phoneNumber;
+    private $noSeats;
+    private $type;
+    private $wifi;
+    private $haveCurtains;
+    private $fromTime;
+    private $fromTownID;
+    private $fromTownName;
+    private $toTime;
+    private $toTownName;
+    private $toTownID;
+    private $busJourneyID;
+    private $duration;
+
+    /**
+     * SheduleBookingView constructor.
+     * @param $scheduleID
+     * @param $regNumber
+     * @param $phoneNumber
+     * @param $noSeats
+     * @param $type
+     * @param $wifi
+     * @param $haveCurtains
+     * @param $fromTime
+     * @param $fromTownName
+     * @param $toTime
+     * @param $toTownName
+     */
+    public function __construct($scheduleID, $regNumber, $phoneNumber, $noSeats, $type, $wifi, $haveCurtains, $fromTime, $fromTownName, $toTime, $toTownName,$duration)
+    {
+        $this->scheduleID = $scheduleID;
+        $this->regNumber = $regNumber;
+        $this->phoneNumber = $phoneNumber;
+        $this->noSeats = $noSeats;
+        $this->type = $type;
+        $this->wifi = $wifi;
+        $this->haveCurtains = $haveCurtains;
+        $this->fromTime = $fromTime;
+        $this->fromTownName = $fromTownName;
+        $this->toTime = $toTime;
+        $this->toTownName = $toTownName;
+        $this->duration=$duration;
+    }
 
     /**
      * @return mixed
      */
-    public function getBus()
+    public function getDuration()
     {
-        return $this->bus;
+        return $this->duration;
     }
 
     /**
-     * @param mixed $bus
+     * @param mixed $duration
      */
-    public function setBus($bus)
+    public function setDuration($duration)
     {
-        $this->bus = $bus;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBusjourney()
-    {
-        return $this->busjourney;
-    }
-
-    /**
-     * @param mixed $busjourney
-     */
-    public function setBusjourney($busjourney)
-    {
-        $this->busjourney = $busjourney;
+        $this->duration = $duration;
     }
 
     /**
      * @return mixed
      */
-    public function getSchedule()
+    public function getScheduleID()
     {
-        return $this->schedule;
+        return $this->scheduleID;
     }
 
     /**
-     * @param mixed $schedule
+     * @param mixed $scheduleID
      */
-    public function setSchedule($schedule)
+    public function setScheduleID($scheduleID)
     {
-        $this->schedule = $schedule;
+        $this->scheduleID = $scheduleID;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRegNumber()
+    {
+        return $this->regNumber;
+    }
+
+    /**
+     * @param mixed $regNumber
+     */
+    public function setRegNumber($regNumber)
+    {
+        $this->regNumber = $regNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
+
+    /**
+     * @param mixed $phoneNumber
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNoSeats()
+    {
+        return $this->noSeats;
+    }
+
+    /**
+     * @param mixed $noSeats
+     */
+    public function setNoSeats($noSeats)
+    {
+        $this->noSeats = $noSeats;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWifi()
+    {
+        return $this->wifi;
+    }
+
+    /**
+     * @param mixed $wifi
+     */
+    public function setWifi($wifi)
+    {
+        $this->wifi = $wifi;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHaveCurtains()
+    {
+        return $this->haveCurtains;
+    }
+
+    /**
+     * @param mixed $haveCurtains
+     */
+    public function setHaveCurtains($haveCurtains)
+    {
+        $this->haveCurtains = $haveCurtains;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFromTime()
+    {
+        return $this->fromTime;
+    }
+
+    /**
+     * @param mixed $fromTime
+     */
+    public function setFromTime($fromTime)
+    {
+        $this->fromTime = $fromTime;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFromTownID()
+    {
+        return $this->fromTownID;
+    }
+
+    /**
+     * @param mixed $fromTownID
+     */
+    public function setFromTownID($fromTownID)
+    {
+        $this->fromTownID = $fromTownID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFromTownName()
+    {
+        return $this->fromTownName;
+    }
+
+    /**
+     * @param mixed $fromTownName
+     */
+    public function setFromTownName($fromTownName)
+    {
+        $this->fromTownName = $fromTownName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToTime()
+    {
+        return $this->toTime;
+    }
+
+    /**
+     * @param mixed $toTime
+     */
+    public function setToTime($toTime)
+    {
+        $this->toTime = $toTime;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToTownName()
+    {
+        return $this->toTownName;
+    }
+
+    /**
+     * @param mixed $toTownName
+     */
+    public function setToTownName($toTownName)
+    {
+        $this->toTownName = $toTownName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToTownID()
+    {
+        return $this->toTownID;
+    }
+
+    /**
+     * @param mixed $toTownID
+     */
+    public function setToTownID($toTownID)
+    {
+        $this->toTownID = $toTownID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBusJourneyID()
+    {
+        return $this->busJourneyID;
+    }
+
+    /**
+     * @param mixed $busJourneyID
+     */
+    public function setBusJourneyID($busJourneyID)
+    {
+        $this->busJourneyID = $busJourneyID;
+    }
+
+
 
 }
