@@ -416,6 +416,39 @@ class Location{
     private $townID;
     private $townName;
     private $GMAPLink;
+    private $distance;
+
+    /**
+     * Location constructor.
+     * @param $townID
+     * @param $townName
+     * @param $GMAPLink
+     * @param $distance
+     */
+    public function __construct($townID, $townName, $GMAPLink, $distance)
+    {
+        $this->townID = $townID;
+        $this->townName = $townName;
+        $this->GMAPLink = $GMAPLink;
+        $this->distance = $distance;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getDistance()
+    {
+        return $this->distance;
+    }
+
+    /**
+     * @param mixed $distance
+     */
+    public function setDistance($distance)
+    {
+        $this->distance = $distance;
+    }
 
     /**
      * @return mixed
@@ -816,6 +849,8 @@ class SheduleBookingView{
     private $toTownID;
     private $busJourneyID;
     private $duration;
+    private $distance;
+
 
     /**
      * SheduleBookingView constructor.
@@ -831,7 +866,7 @@ class SheduleBookingView{
      * @param $toTime
      * @param $toTownName
      */
-    public function __construct($scheduleID, $regNumber, $phoneNumber, $noSeats, $type, $wifi, $haveCurtains, $fromTime, $fromTownName, $toTime, $toTownName,$duration)
+    public function __construct($scheduleID, $regNumber, $phoneNumber, $noSeats, $type, $wifi, $haveCurtains, $fromTime, $fromTownName, $toTime, $toTownName,$duration,$distance)
     {
         $this->scheduleID = $scheduleID;
         $this->regNumber = $regNumber;
@@ -845,7 +880,25 @@ class SheduleBookingView{
         $this->toTime = $toTime;
         $this->toTownName = $toTownName;
         $this->duration=$duration;
+        $this->distance=$distance;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDistance()
+    {
+        return $this->distance;
+    }
+
+    /**
+     * @param mixed $distance
+     */
+    public function setDistance($distance)
+    {
+        $this->distance = $distance;
+    }
+
 
     /**
      * @return mixed

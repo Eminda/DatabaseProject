@@ -7,6 +7,7 @@
  */
 session_start();
 include_once '../Controller/ScheduleBookingController.php';
+
 echo 'sd';
 include_once '../Modal/PhpClasses.php';
 echo 'sd';
@@ -14,17 +15,31 @@ require_once '../Include/header.php';
 //include '../Include/beforenav.php';
 require_once '../Include/functions.php';
 require '../Include/PublicConnect.php';
-if(isset($_GET["ScheduleID"])){
+if(isset($_GET["ScheduleID"]) && isset($_GET['RouteID']) && isset($_GET['FromTownID']) && isset($_GET['ToTownID'])){
     $ScheduleID=$_GET['ScheduleID'];
+    $RouteID=$_GET['RouteID'];
+    $FroTownID=$_GET['FromTownID'];
+    $ToTownID=$_GET['ToTownID'];
     $bookingSchedule=ScheduleBookingController::getBookingScheduleFromScheduleID($conn, $ScheduleID);
+    $route=ScheduleBookingController::getRouteLocation($conn,$RouteID,$FroTownID,$ToTownID);
+    $cost=0;
+    $cost=ScheduleBookingController::getCostPerKm($conn);
 }else{
     echo "Invalid Data Input";
     die();
 }
-echo $bookingSchedule->getToTime();
-echo '<br>';
-echo gettype($bookingSchedule->getToTime());
-echo '<br>';
+$locations=$route->getLocations();
+if(sizeof($locations)<2){
+    echo "Invalid Data Input";
+    die();
+}
+$from=$locations[0];
+$to=$locations[sizeof($locations)-1];
+if(abs($from->getDistance()-$to->getDistance())>$bookingSchedule->getDistance()){
+    echo "Invalid Data Input";
+    die();
+}
+$distance=abs($from->getDistance()-$to->getDistance());
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +64,8 @@ echo '<br>';
     </style>
 </head>
 <body style="background-color:#ffffff ">
+<input type="hidden" id="cost" <?php echo 'value="'.$cost.'"'?> />
+<input type="hidden" id="distance" <?php echo 'value="'.$distance.'"'?> />
 
 <div class="container-fluid" style="background-color: #ffffff">
 
@@ -135,17 +152,18 @@ echo '<br>';
                 <br>
                 <br>
 
-                <h3>Your Journy - </h3>
+                <h3>Your Journy -<?php echo getCallculatedDuration($bookingSchedule->getDuration(),$bookingSchedule->getDistance(),$locations[0]->getDistance(),$locations[sizeof($locations)-1]->getDistance())?> </h3>
                 <div class="col-md-2 col-md-offset-1" style="text-align: right;"><h4>From:</h4></div>
-                <div class="col-md-3"><h4><br>8.40 A.M</h4></div>
+                <div class="col-md-3"><h4><?php echo $locations[0]->getTownName();?><br>8.40 A.M</h4></div>
                 <div class="col-md-2 " style="text-align: right;"><h4>To:</h4></div>
-                <div class="col-md-3"><h4>Colombo <br>11.00 A.M</h4></div>
+                <div class="col-md-3"><h4><?php $locations=$route->getLocations();echo $locations[sizeof($locations)-1]->getTownName();?> <br>11.00 A.M</h4></div>
             </div>
         </div>
         <div>
         </div>
     </div>
     <form>
+        <input type="hidden" id="selectedSeats" name="selectedSeats" value=""/>
         <div class="row">
             <div class="col-md-8">
                 <h3>Fill ticket details</h3>
@@ -177,27 +195,13 @@ echo '<br>';
                 <div class="col-md-12">
                     <div class="col-md-4"><h4>From</h4></div>
                     <div class="input-group col-md-6">
-                        <select class="btn btn-default form-control" style="width:100%;margin-top:4px;">
-                            <option value="Galle">Galle</option>
-                            <option value="Ambalangoda" selected>Ambalangoda</option>
-                            <option value="Aluthgama">Aluthgama</option>
-                            <option value="Kalutara">Kalutara</option>
-                            <option value="Panadura">Panadura</option>
-                            <option value="Colombo">Colombo</option>
-                        </select>
+                        <h4 ><?php echo $from->getTownName(); ?></h4>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="col-md-4"><h4>To</h4></div>
                     <div class="input-group col-md-6">
-                        <select class="btn btn-default form-control" style="width:100%;margin-top: 4px;">
-                            <option value="Galle">Galle</option>
-                            <option value="Ambalangoda">Ambalangoda</option>
-                            <option value="Aluthgama">Aluthgama</option>
-                            <option value="Kalutara">Kalutara</option>
-                            <option value="Panadura">Panadura</option>
-                            <option value="Colombo" selected>Colombo </option>
-                        </select>
+                        <h4 ><?php echo $to->getTownName(); ?></h4>
                     </div>
 
                 </div>
@@ -228,15 +232,16 @@ echo '<br>';
                 <div class="col-md-12">
                     <div class="col-md-4"><h4>Children under 12</h4></div>
                     <div class="input-group col-md-2">
-                        <select id="ticketCountChildren" class="btn btn-default form-control" style="width:100%;margin-top: 4px;">
-                            <option value="1" selected>1</option>
+                        <select id="ticketCountChildren" class="btn btn-default form-control" style="width:100%;margin-top: 4px;" onchange="callcualatePayment();">
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="col-md-4"><h4>Select Seat Numbers</h4></div>
                     <div class="input-group col-md-2" style="float:left">
-                        <select id="availableSeats" class="btn btn-default form-control" style="width:100%;margin-top: 4px;">
+                        <select id="availableSeats" class="btn btn-default form-control" style="width:100%;margin-top: 4px;" >
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -261,19 +266,19 @@ echo '<br>';
                 <div class="col-md-12">
                     <div class="col-md-4"><h4>Journy distance</h4></div>
                     <div class="input-group col-md-3">
-                        <h4 id="distance">87 Km</h4>
+                        <h4 id="distance"><?php echo $distance;?> Km</h4>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="col-md-4"><h4>Adult price</h4></div>
                     <div class="input-group col-md-3">
-                        <h4 id="ticketPrice">Rs. 110.00</h4>
+                        <h4 id="ticketPrice">Rs. <?php $english_format_number = number_format($cost*$distance, 2, '.', '');echo $english_format_number?></h4>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="col-md-4"><h4>Total Cost</h4></div>
                     <div class="input-group col-md-3">
-                        <h4 id="total">Rs. 110.00</h4>
+                        <h4 id="total">Rs. <?php echo $english_format_number?></h4>
                     </div>
                 </div>
 
@@ -300,7 +305,7 @@ echo '<br>';
             selectedDate = $.datepicker.formatDate("yyyy-mm-dd", $(this).datepicker('getDate'));
         }
     });
-
+    $("#datepicker").val(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
 
 
 </script>

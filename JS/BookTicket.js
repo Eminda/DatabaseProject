@@ -4,6 +4,7 @@
 //var date = $('#datepicker').datepicker({ dateFormat: 'yyyy-mm-d' }).val();
 var list = [];
 var availableSeats = [1, 2, 4, 5, 6, 7, 8, 10, 12, 15, 16, 18, 20, 21, 22, 25, 30, 31, 40, 43, 45, 50, 53];
+var selectedSeats=[];
 var copyOfAllSeats=availableSeats.slice();
 var selectedSeatCount=0;
 updateAvailableSeatList();
@@ -23,6 +24,7 @@ function selectSeat() {
         var val = $('#availableSeats').val();
         $('#seatHolder').html($('#seatHolder').html() + "<button class='btn btn-info' style='margin: 2px;' type='button' onclick='removeSelectedSeat(this)' onsubmit='return false' value='"+val+"'>" + val + "</button>");
         var index = availableSeats.indexOf(parseInt(val));
+        selectedSeats.push(val);
         availableSeats.splice(index, 1);
         updateAvailableSeatList();
         selectedSeatCount++;
@@ -35,6 +37,8 @@ function removeSelectedSeat(item) {
     availableSeats.sort(sortNumber);
     updateAvailableSeatList();
     item.parentNode.removeChild(item);
+    var index = selectedSeats.indexOf(parseInt(val));
+    selectedSeatCount.splice(index, 1);
     selectedSeatCount--;
 }
 function sortNumber(a,b) {
@@ -48,7 +52,17 @@ function ticketNoSelect(){
     updateAvailableSeatList();
     $('#ticketCountChildren')[0].options.length=0;
     var val=parseInt($('#ticketCount').val());
-    for(var i=1;i<=val;i++){
+    for(var i=0;i<=val;i++){
         $("#ticketCountChildren").append(new Option("" + i, "" + i));
     }
+    callcualatePayment();
+}
+function callcualatePayment(){
+    console.log("sd"+$('#total'));
+    var numSeat=parseInt($('#ticketCount').val());
+    var children=parseInt($('#ticketCountChildren').val());
+    numSeat-=children*0.5;
+    var cost=parseFloat($('#cost').val())*parseFloat($('#distance').val());
+    console.log(cost+" "+cost*numSeat);
+    $('#total').html("Rs. "+(numSeat*cost).toFixed(2));
 }

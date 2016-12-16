@@ -35,5 +35,8 @@ function getTimeFromStringTimeStamp($timeStamp){
     }
     return "".$hour.".".$min.$postFix;
 }
+function getCallculatedDuration($duration,$distance,$fromDistance,$toDistance){
+    return getJourneyDuration($duration*(abs($fromDistance-$toDistance)/$distance));
+}
 
 ?>
