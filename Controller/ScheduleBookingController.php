@@ -12,6 +12,10 @@ include_once '../DaoImpl/AdminDao.php';
 include_once '../DaoImpl/BookingDao.php';
 include_once '../DaoImpl/BookingSeatDao.php';
 include_once '../DaoImpl/BookingSeatViewDao.php';
+include_once '../DaoImpl/NearestLocationDao.php';
+include_once '../DaoImpl/CostPerKmDao.php';
+include_once '../DaoImpl/ImageDao.php';
+
 
 class ScheduleBookingController
 {
@@ -21,6 +25,9 @@ class ScheduleBookingController
     private static $booking;
     private static $bookingSeat;
     private static $bookingSeatView;
+    private static $nearestLocation;
+    private static $costPerKm;
+    private static $image;
 
     private static function init()
     {
@@ -31,6 +38,9 @@ class ScheduleBookingController
             ScheduleBookingController::$booking = new BookingDao();
             ScheduleBookingController::$bookingSeat = new BookingSeatDao();
             ScheduleBookingController::$bookingSeatView=new BookingSeatViewDao();
+            ScheduleBookingController::$nearestLocation=new NearestLocationDao();
+            ScheduleBookingController::$costPerKm=new CostPerKmDao();
+            ScheduleBookingController::$image=new ImageDao();
         }
 
     }
@@ -48,10 +58,10 @@ class ScheduleBookingController
     }
 
 
-    public static function getCostPerKm($conn)
+    public static function getCostPerKm($conn,$type)
     {
         self::init();
-        return ScheduleBookingController::$admin->getCostPerKM($conn);
+        return ScheduleBookingController::$costPerKm->getCostPerKmForBusType($conn,$type);
     }
 
     public static function createBooking($conn, $booking)
@@ -112,11 +122,22 @@ class ScheduleBookingController
         $temp= ScheduleBookingController::$scheduleBooking->getFirstBookingDataForSpecificDay($conn,$RegNumber,$day);
         return $temp;
     }
+    public static function getNearestTenSchedules($conn,$RegNumber,$time){
+        self::init();
+        return ScheduleBookingController::$scheduleBooking->getNextBookingSchedules($conn,$RegNumber,$time);
+    }
     public static function getAvailableSeats($conn,$Seat,$ScheduleID){
         self::init();
         return ScheduleBookingController::$bookingSeat->getAvailableSeats($conn,$Seat,$ScheduleID);
     }
-
+    public static function getNearestLocation($conn,$RegNumber,$time){
+        self::init();
+        return ScheduleBookingController::$nearestLocation->getNearestLocationPoint($conn,$RegNumber,$time);
+    }
+    public static function getImagesForBus($conn,$RegNumber){
+        self::init();
+        return ScheduleBookingController::$image->getImagesForBus($conn,$RegNumber);
+    }
 
 }
 

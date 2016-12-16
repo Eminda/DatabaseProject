@@ -44,7 +44,9 @@ if (isset($_GET["ScheduleID"]) && isset($_GET['RouteID']) && isset($_GET['FromTo
     $AvailableSeats = ScheduleBookingController::getAvailableSeats($conn, $bookingSchedule->getNoSeats(), $ScheduleID);
     $route = ScheduleBookingController::getRouteLocation($conn, $RouteID, $FroTownID, $ToTownID);
     $cost = 0;
-    $cost = ScheduleBookingController::getCostPerKm($conn);
+    $cost = ScheduleBookingController::getCostPerKm($conn,$bookingSchedule->getType());
+    $images=ScheduleBookingController::getImagesForBus($conn,$bookingSchedule->getRegNumber());
+
 } else {
     echo "Invalid Data Input";
     die();
@@ -109,20 +111,39 @@ $journeyTime = getJourneyTime($bookingSchedule->getDuration(), $bookingSchedule-
              style="height: 500px;overflow:hidden;background-color: white">
             <!-- Indicators -->
             <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <?php
+                    $i=0;
+                    $st='class="active"';
+                    foreach ($images as $image){
+                        echo '<li data-target="#myCarousel" data-slide-to="'.$i.'" '.$st.'></li>';
+                        $st="";
+                        $i+=1;
+                    }
+                    if(sizeof($images)==0){
+                        echo '<li data-target="#myCarousel" data-slide-to="0" '.$st.'></li>';
+                    }
+                ?>
 
             </ol>
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <img src="../Resources/Bus_1.png" alt="Chania" width="800px" height=500px>
-                </div>
+                <?php
+                $st=' active';
+                foreach ($images as $image){
+                    echo '<div class="item'.$st.'">
+                    <img src="../Image/'.$image.'" alt="Chania" width="800px" height=500px>
+                </div>';
+                    $st="";
+                }
+                if(sizeof($images)==0){
+                    echo '<div class="item'.$st.'">
+                    <img src="../Image/bus.jpg" alt="Chania" width="800px" height=500px>
+                </div>';
+                    $st="";
+                }
+                ?>
 
-                <div class="item">
-                    <img src="../Resources/Bus_2.png" alt="Chania" width="800px" height=500px>
-                </div>
 
             </div>
 
@@ -168,46 +189,32 @@ $journeyTime = getJourneyTime($bookingSchedule->getDuration(), $bookingSchedule-
 
     </div>
     <div class="row" style="padding-top:10px;">
-        <div class="col-md-7">
-            <iframe
-                width="100%"
-                height="550"
-                frameborder="0" style="border:0"
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAUPcMFQBI6x3H5ouZen7cgm_9iSH_87CM
-    &q=Space+Needle,Seattle+WA" allowfullscreen
-            >
-            </iframe>
-        </div>
-        <div class="col-md-5" style="padding-left: 40px">
-            <br>
-            <br>
-            <br>
+
+        <div class="col-md-11 col-md-offset-1" style="padding-left: 40px">
+
             <div class="col-md-12">
-                <h3>Bus Journy - <?php echo getJourneyDuration($bookingSchedule->getDuration()); ?></h3>
-                <div class="col-md-2 col-md-offset-1" style="text-align: right;"><h4>From:</h4></div>
-                <div class="col-md-3"><h4><?php echo $bookingSchedule->getFromTownName(); ?>
-                        <br><br><?php echo getTimeFromStringTimeStamp($bookingSchedule->getFromTime()); ?></h4></div>
-                <div class="col-md-2 " style="text-align: right;"><h4>To:</h4></div>
-                <div class="col-md-3"><h4><?php echo $bookingSchedule->getToTownName(); ?>
-                        <br><br><?php echo getTimeFromStringTimeStamp($bookingSchedule->getToTime()); ?></h4></div>
+                <h2>Bus Journy - <?php echo getJourneyDuration($bookingSchedule->getDuration()); ?></h2>
+                <div class="col-md-2 col-md-offset-1" style="text-align: right;"><h3>From:</h3></div>
+                <div class="col-md-3"><h3><?php echo $bookingSchedule->getFromTownName(); ?>
+                        <br><br><?php echo getTimeFromStringTimeStamp($bookingSchedule->getFromTime()); ?></h3></div>
+                <div class="col-md-2 " style="text-align: right;"><h3>To:</h3></div>
+                <div class="col-md-3"><h3><?php echo $bookingSchedule->getToTownName(); ?>
+                        <br><br><?php echo getTimeFromStringTimeStamp($bookingSchedule->getToTime()); ?></h3></div>
 
 
             </div>
             <div class="col-md-12">
-                <br>
-                <br>
-                <br>
-                <br>
 
-                <h3>Your Journy
-                    -<?php echo getCallculatedDuration($bookingSchedule->getDuration(), $bookingSchedule->getDistance(), $locations[0]->getDistance(), $locations[sizeof($locations) - 1]->getDistance()) ?> </h3>
-                <div class="col-md-2 col-md-offset-1" style="text-align: right;"><h4>From:</h4></div>
-                <div class="col-md-3"><h4><?php echo $locations[0]->getTownName(); ?>
-                        <br><br><?php echo $journeyTime[0]; ?></h4></div>
-                <div class="col-md-2 " style="text-align: right;"><h4>To:</h4></div>
-                <div class="col-md-3"><h4><?php $locations = $route->getLocations();
+
+                <h2>Your Journy
+                    -<?php echo getCallculatedDuration($bookingSchedule->getDuration(), $bookingSchedule->getDistance(), $locations[0]->getDistance(), $locations[sizeof($locations) - 1]->getDistance()) ?> </h2>
+                <div class="col-md-2 col-md-offset-1" style="text-align: right;"><h3>From:</h3></div>
+                <div class="col-md-3"><h3><?php echo $locations[0]->getTownName(); ?>
+                        <br><br><?php echo $journeyTime[0]; ?></h3></div>
+                <div class="col-md-2 " style="text-align: right;"><h3>To:</h3></div>
+                <div class="col-md-3"><h3><?php $locations = $route->getLocations();
                         echo $locations[sizeof($locations) - 1]->getTownName(); ?>
-                        <br><br><?php echo $journeyTime[1]; ?></h4></div>
+                        <br><br><?php echo $journeyTime[1]; ?></h3></div>
             </div>
         </div>
         <div>

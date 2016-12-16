@@ -69,11 +69,18 @@ function getJourneyTime($duration,$busFromDistance,$busToDistance,$journeyFromDi
 }
 function getTime($time){
     $time=intval($time);
-    return getTimeFromStringTimeStamp(date('Y-m-d h:i:s',$time+1800*9));
+    return getTimeFromStringTimeStamp(date('Y-m-d h:i:s',$time));
 }
 function getDateFromTimeStamp($time){
-    list($day,$t)=explode(' ',date('Y-m-d h:i:s',$time+1800*9));
+    list($day,$t)=explode(' ',date('Y-m-d h:i:s',$time));
     return $day;
 }
-
+function getActualTime(){
+    $time=time();
+    return $time;
+}
+function getDayBefore(){
+    $time=time()-3600*24;
+    return $time;
+}
 ?>

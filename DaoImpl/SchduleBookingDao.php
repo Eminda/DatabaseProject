@@ -12,7 +12,6 @@ class SchduleBookingDao
     public function getScheduleData($conn,$scheduleID){
         $sql="select RegNumber,PhoneNumber,NoSeat,Type,Wifi,HaveCurtains,FromTime,ToTime,FromTownName,ToTownName,Duration,Distance,FromInt,ToInt,FromDistance,ToDistance,RouteID,FromTownID,ToTownID from BookingSchedule where ScheduleID=?";
         $stmt = $conn->prepare($sql);
-        echo $scheduleID."dddddddd";
         $stmt->bind_Param('s', $scheduleID);
         $stmt->execute();
 
@@ -24,7 +23,22 @@ class SchduleBookingDao
 
         $stmt->free_result();
         return $booking;
+    }
+    public function getNextBookingSchedules($conn,$RegNumber,$FromInt){
+        $sql="select ScheduleID,PhoneNumber,NoSeat,Type,Wifi,HaveCurtains,FromTime,ToTime,FromTownName,ToTownName,Duration,Distance,FromInt,ToInt,FromDistance,ToDistance,RouteID,FromTownID,ToTownID from BookingSchedule where RegNumber=? and FromInt>=? order by FromInt limit 10";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_Param('sd', $RegNumber,$FromInt);
+        $stmt->execute();
 
+        $result = $stmt->get_result();
+        $bookings=array();
+        while ($row = $result->fetch_assoc()) {
+            $booking=new SheduleBookingView($row['ScheduleID'],$RegNumber,$row['PhoneNumber'],$row['NoSeat'],$row['Type'],$row['Wifi'],$row['HaveCurtains'],$row['FromTime'],$row['FromTownName'],$row['ToTime'],$row['ToTownName'],$row['Duration'],$row['Distance'],$row['FromInt'],$row['ToInt'],$row['FromDistance'],$row['ToDistance'],$row['RouteID'],$row['FromTownID'],$row['ToTownID']);
+            array_push($bookings,$booking);
+        }
+
+        $stmt->free_result();
+        return $bookings;
     }
     public function getFirstBookingDataForSpecificDay($conn,$RegNumber,$day){
         $sql="select ScheduleID,RegNumber,PhoneNumber,NoSeat,Type,Wifi,HaveCurtains,FromTime,ToTime,FromTownName,ToTownName,Duration,Distance,FromInt,ToInt,FromDistance,ToDistance,RouteID,FromTownID,ToTownID from BookingSchedule where RegNumber=? and FromTime like ? order by FromInt limit 1";

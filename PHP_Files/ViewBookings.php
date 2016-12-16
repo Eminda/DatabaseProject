@@ -54,6 +54,7 @@ if (isset($_GET["RegNumber"])) {
 
         $locations=ScheduleBookingController::getRouteLocation($conn,$Schedule->getRouteID(),$Schedule->getFromTownID(),$Schedule->getToTownID());
         $locations=$locations->getLocations();
+        $images=ScheduleBookingController::getImagesForBus($conn,$Schedule->getRegNumber());
 
     }
 
@@ -102,24 +103,41 @@ if (isset($_GET["RegNumber"])) {
              style="height: 500px;overflow:hidden;background-color: white">
             <!-- Indicators -->
             <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <?php
+                $i=0;
+                $st='class="active"';
+                foreach ($images as $image){
+                    echo '<li data-target="#myCarousel" data-slide-to="'.$i.'" '.$st.'></li>';
+                    $st="";
+                    $i+=1;
+                }
+                if(sizeof($images)==0){
+                    echo '<li data-target="#myCarousel" data-slide-to="0" '.$st.'></li>';
+                }
+                ?>
 
             </ol>
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <img src="../Resources/Bus_1.png" alt="Chania" width="800px" height=500px>
-                </div>
+                <?php
+                $st=' active';
+                foreach ($images as $image){
+                    echo '<div class="item'.$st.'">
+                    <img src="../Image/'.$image.'" alt="Chania" width="800px" height=500px>
+                </div>';
+                    $st="";
+                }
+                if(sizeof($images)==0){
+                    echo '<div class="item'.$st.'">
+                    <img src="../Image/bus.jpg" alt="Chania" width="800px" height=500px>
+                </div>';
+                    $st="";
+                }
+                ?>
 
-                <div class="item">
-                    <img src="../Resources/Bus_2.png" alt="Chania" width="800px" height=500px>
-                </div>
 
-            </div>
-
-            <!-- Left and right controls -->
+                <!-- Left and right controls -->
             <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
@@ -165,7 +183,7 @@ if (isset($_GET["RegNumber"])) {
         </form>
     </div>
     <div style="float:left;padding-left: 10px;">
-        <input type="button" class="btn btn-danger" value="Edit Shedules" style="margin-top:4px;width: 150px;" onclick="sortOnDistance();"/>
+        <input type="hidden" class="btn btn-danger" value="Edit Shedules" style="margin-top:4px;width: 150px;" onclick="sortOnDistance();"/>
     </div>
     <div style="clear: both"></div>
 

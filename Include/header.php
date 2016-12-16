@@ -5,6 +5,7 @@
  * Date: 12/9/2016
  * Time: 9:17 PM
  */
+date_default_timezone_set('Asia/Colombo');
 $date = new DateTime("2016-12-16");
 
 ?>

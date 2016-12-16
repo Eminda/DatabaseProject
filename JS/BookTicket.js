@@ -2,6 +2,14 @@
  * Created by acer on 06/12/2016.
  */
 //var date = $('#datepicker').datepicker({ dateFormat: 'yyyy-mm-d' }).val();
+
+
+
+
+
+
+
+
 var list = [];
 
 var selectedSeats=[];
