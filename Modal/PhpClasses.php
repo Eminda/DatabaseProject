@@ -655,6 +655,30 @@ class Booking{
     private $toLocation;
 
     /**
+     * Booking constructor.
+     * @param $scheduleID
+     * @param $seats
+     * @param $customerName
+     * @param $nic
+     * @param $email
+     * @param $payment
+     * @param $fromLocation
+     * @param $toLocation
+     */
+    public function __construct($scheduleID, $customerName, $nic, $email, $payment, $fromLocation, $toLocation, $seats)
+    {
+        $this->scheduleID = $scheduleID;
+        $this->seats = $seats;
+        $this->customerName = $customerName;
+        $this->nic = $nic;
+        $this->email = $email;
+        $this->payment = $payment;
+        $this->fromLocation = $fromLocation;
+        $this->toLocation = $toLocation;
+    }
+
+
+    /**
      * @return mixed
      */
     public function getScheduleID()
@@ -833,6 +857,55 @@ class Booking{
 
 
 }
+class BookingSeat{
+    private $TicketNo;
+    private $SeatNumber;
+
+    /**
+     * BookingSeat constructor.
+     * @param $TicketNo
+     * @param $SeatNumber
+     */
+    public function __construct($TicketNo, $SeatNumber)
+    {
+        $this->TicketNo = $TicketNo;
+        $this->SeatNumber = $SeatNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTicketNo()
+    {
+        return $this->TicketNo;
+    }
+
+    /**
+     * @param mixed $TicketNo
+     */
+    public function setTicketNo($TicketNo)
+    {
+        $this->TicketNo = $TicketNo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSeatNumber()
+    {
+        return $this->SeatNumber;
+    }
+
+    /**
+     * @param mixed $SeatNumber
+     */
+    public function setSeatNumber($SeatNumber)
+    {
+        $this->SeatNumber = $SeatNumber;
+    }
+
+
+}
 class SheduleBookingView{
     private $scheduleID;
     private $regNumber;
@@ -842,14 +915,18 @@ class SheduleBookingView{
     private $wifi;
     private $haveCurtains;
     private $fromTime;
+    private $fromInt;
     private $fromTownID;
     private $fromTownName;
     private $toTime;
+    private $toInt;
     private $toTownName;
     private $toTownID;
     private $busJourneyID;
     private $duration;
     private $distance;
+    private $toDistance;
+    private $fromDistance;
 
 
     /**
@@ -866,7 +943,7 @@ class SheduleBookingView{
      * @param $toTime
      * @param $toTownName
      */
-    public function __construct($scheduleID, $regNumber, $phoneNumber, $noSeats, $type, $wifi, $haveCurtains, $fromTime, $fromTownName, $toTime, $toTownName,$duration,$distance)
+    public function __construct($scheduleID, $regNumber, $phoneNumber, $noSeats, $type, $wifi, $haveCurtains, $fromTime, $fromTownName, $toTime, $toTownName,$duration,$distance,$fromInt,$toInt,$fromDistance,$toDistance)
     {
         $this->scheduleID = $scheduleID;
         $this->regNumber = $regNumber;
@@ -881,6 +958,75 @@ class SheduleBookingView{
         $this->toTownName = $toTownName;
         $this->duration=$duration;
         $this->distance=$distance;
+        $this->fromInt=$fromInt;
+        $this->toInt=$toInt;
+        $this->fromDistance=$fromDistance;
+        $this->toDistance=$toDistance;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToDistance()
+    {
+        return $this->toDistance;
+    }
+
+    /**
+     * @param mixed $toDistance
+     */
+    public function setToDistance($toDistance)
+    {
+        $this->toDistance = $toDistance;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFromDistance()
+    {
+        return $this->fromDistance;
+    }
+
+    /**
+     * @param mixed $fromDistance
+     */
+    public function setFromDistance($fromDistance)
+    {
+        $this->fromDistance = $fromDistance;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getFromInt()
+    {
+        return $this->fromInt;
+    }
+
+    /**
+     * @param mixed $fromInt
+     */
+    public function setFromInt($fromInt)
+    {
+        $this->fromInt = $fromInt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToInt()
+    {
+        return $this->toInt;
+    }
+
+    /**
+     * @param mixed $toInt
+     */
+    public function setToInt($toInt)
+    {
+        $this->toInt = $toInt;
     }
 
     /**

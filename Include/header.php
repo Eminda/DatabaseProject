@@ -5,6 +5,8 @@
  * Date: 12/9/2016
  * Time: 9:17 PM
  */
+$date = new DateTime("2016-12-16");
+echo $date->getTimestamp();
 ?>
 
 <!DOCTYPE html>

@@ -23,9 +23,14 @@ function getJourneyDuration($duration){
     }
     return "".$hour." Hours ".$min;
 }
+
 function getTimeFromStringTimeStamp($timeStamp){
     list($day,$time)=explode (' ',$timeStamp);
     list($hour,$min,$sec)=explode(':',$time);
+    return getComputedTime($hour,$min);
+}
+function getComputedTime($hour,$min){
+
     $postFix='';
     if(intval($hour)>12 || (intval($hour)==12 && intval($min)!=0)){
         $postFix=" P.M";
@@ -38,5 +43,30 @@ function getTimeFromStringTimeStamp($timeStamp){
 function getCallculatedDuration($duration,$distance,$fromDistance,$toDistance){
     return getJourneyDuration($duration*(abs($fromDistance-$toDistance)/$distance));
 }
-
+function getJourneyTime($duration,$busFromDistance,$busToDistance,$journeyFromDistance,$journeyToDistance,$totalDistance,$fromInt){
+    $journeyTime=array();
+    echo "<br>";
+    echo gettype($fromInt);
+    echo $busFromDistance;
+    if($journeyFromDistance<$journeyToDistance){
+        $fromTime=getTime($duration*(abs($journeyFromDistance-$busFromDistance)/$totalDistance)+$fromInt);
+        array_push($journeyTime,$fromTime);
+        $toTime=getTime($duration*(abs($journeyToDistance-$busFromDistance)/$totalDistance)+$fromInt);
+        array_push($journeyTime,$toTime);
+    }elseif($journeyFromDistance>=$journeyToDistance){
+        $fromTime=getTime($duration*(abs($busToDistance-$journeyFromDistance)/$totalDistance)+$fromInt);
+        array_push($journeyTime,$fromTime);
+        $toTime=getTime($duration*(abs($busToDistance-$journeyFromDistance)/$totalDistance)+$fromInt);
+        array_push($journeyTime,$toTime);
+    }
+    return $journeyTime;
+}
+function getTime($time){
+    $time=intval($time);
+    return getTimeFromStringTimeStamp(date('Y-m-d h:i:s',$time+1800*9));
+}
+function getDateFromTimeStamp($time){
+    list($day,$t)=explode(' ',date('Y-m-d h:i:s',$time+1800*9));
+    return $day;
+}
 ?>

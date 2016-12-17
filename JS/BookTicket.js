@@ -28,6 +28,7 @@ function selectSeat() {
         availableSeats.splice(index, 1);
         updateAvailableSeatList();
         selectedSeatCount++;
+        $('#selectedSeats').val(selectedSeats.toString());
     }
 }
 function removeSelectedSeat(item) {
@@ -40,6 +41,7 @@ function removeSelectedSeat(item) {
     var index = selectedSeats.indexOf(parseInt(val));
     selectedSeatCount.splice(index, 1);
     selectedSeatCount--;
+    $('#selectedSeats').val(selectedSeats.toString());
 }
 function sortNumber(a,b) {
     return a - b;
@@ -65,4 +67,14 @@ function callcualatePayment(){
     var cost=parseFloat($('#cost').val())*parseFloat($('#distance').val());
     console.log(cost+" "+cost*numSeat);
     $('#total').html("Rs. "+(numSeat*cost).toFixed(2));
+    $('#payment').val((numSeat*cost).toFixed(2));
+    $('#selectedSeats').val(selectedSeats.toString());
+}
+function validateForm(){
+
+    if(parseInt($('#ticketCount').val())!=selectedSeats.length){
+        alert('You must select seat numbers fot the tickets');
+        return false;
+    }
+    return true;
 }

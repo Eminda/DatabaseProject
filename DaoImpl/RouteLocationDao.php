@@ -10,10 +10,10 @@ include_once '../Modal/PhpClasses.php';
 class RouteLocationDao
 {
     public function getRouteLocation($conn,$routeId,$fromTownID,$toTownID){
-        $sql="select d.TownID,l.TownName,l.GMAPLink,d.Distance from routeDestination d,Location l where (d.distance between (select distance from RouteDestination where RouteId=? and townID=?) and  (select distance from RouteDestination where RouteId=? and townID=?)) and routeId=? and d.TownID=l.TownID;";
+        $sql="select d.TownID,l.TownName,l.GMAPLink,d.Distance from routeDestination d,Location l where ((d.distance between (select distance from RouteDestination where RouteId=? and townID=?) and  (select distance from RouteDestination where RouteId=? and townID=?)) || (d.distance between (select distance from RouteDestination where RouteId=? and townID=?) and  (select distance from RouteDestination where RouteId=? and townID=?))) and routeId=? and d.TownID=l.TownID;";
         $stmt = $conn->prepare($sql);
 
-        $stmt->bind_Param('sssss',$routeId, $fromTownID,$routeId,$toTownID,$routeId);
+        $stmt->bind_Param('sssssssss',$routeId, $fromTownID,$routeId,$toTownID,$routeId, $toTownID,$routeId,$fromTownID,$routeId);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -28,4 +28,5 @@ class RouteLocationDao
         $stmt->free_result();
         return $route;
     }
+
 }

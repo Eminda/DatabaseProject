@@ -15,6 +15,32 @@ require_once '../Include/header.php';
 //include '../Include/beforenav.php';
 require_once '../Include/functions.php';
 require '../Include/PublicConnect.php';
+echo var_dump($_GET);
+echo $_GET['name'];
+echo "<br>";
+echo $_GET['post'];
+if(isSet($_GET['post'])){
+    if(isset($_GET['scheduleID']) && isset($_GET['name']) && isset($_GET['nic']) && isset($_GET['email']) && isset($_GET['payment']) && isset($_GET['fromTown']) && isset($_GET['toTown']) && isset($_GET['selectedSeats'])){
+        $ScheduleID=$_GET['scheduleID'];
+        $Name=$_GET['name'];
+        $Nic=$_GET['nic'];
+        $Email=$_GET['email'];
+        $Payment=$_GET['payment'];
+        $From=$_GET['fromTown'];
+        $To=$_GET['toTown'];
+        $SelectedSeats=$_GET['selectedSeats'];
+        $Seats=explode(',',$SelectedSeats);
+        echo "dfddddddddddddddddddddddddd".$Seats[0];
+        $booking=new Booking($ScheduleID,$Name,$Nic,$Email,$Payment,$From,$To,$Seats);
+
+            ScheduleBookingController::createBooking($conn, $booking);
+
+    }else{
+
+    }
+}else{
+    echo "sf";
+}
 if(isset($_GET["ScheduleID"]) && isset($_GET['RouteID']) && isset($_GET['FromTownID']) && isset($_GET['ToTownID'])){
     $ScheduleID=$_GET['ScheduleID'];
     $RouteID=$_GET['RouteID'];
@@ -40,6 +66,7 @@ if(abs($from->getDistance()-$to->getDistance())>$bookingSchedule->getDistance())
     die();
 }
 $distance=abs($from->getDistance()-$to->getDistance());
+$journeyTime=getJourneyTime($bookingSchedule->getDuration(),$bookingSchedule->getFromDistance(),$bookingSchedule->getToDistance(),$from->getDistance(),$to->getDistance(),$bookingSchedule->getDistance(),$bookingSchedule->getFromInt());
 ?>
 
 <!DOCTYPE html>
@@ -140,9 +167,9 @@ $distance=abs($from->getDistance()-$to->getDistance());
             <div class="col-md-12">
                 <h3>Bus Journy - <?php echo getJourneyDuration($bookingSchedule->getDuration());?></h3>
                 <div class="col-md-2 col-md-offset-1" style="text-align: right;"><h4>From:</h4></div>
-                <div class="col-md-3"><h4><?php echo $bookingSchedule->getFromTownName();?>  <br>8.00 A.M</h4></div>
+                <div class="col-md-3"><h4><?php echo $bookingSchedule->getFromTownName();?>  <br><br><?php echo getTimeFromStringTimeStamp($bookingSchedule->getFromTime());?></h4></div>
                 <div class="col-md-2 " style="text-align: right;"><h4>To:</h4></div>
-                <div class="col-md-3"><h4><?php echo $bookingSchedule->getToTownName();?>  <br>11.00 A.M</h4></div>
+                <div class="col-md-3"><h4><?php echo $bookingSchedule->getToTownName();?>  <br><br><?php echo getTimeFromStringTimeStamp($bookingSchedule->getToTime());?></h4></div>
 
 
             </div>
@@ -154,29 +181,32 @@ $distance=abs($from->getDistance()-$to->getDistance());
 
                 <h3>Your Journy -<?php echo getCallculatedDuration($bookingSchedule->getDuration(),$bookingSchedule->getDistance(),$locations[0]->getDistance(),$locations[sizeof($locations)-1]->getDistance())?> </h3>
                 <div class="col-md-2 col-md-offset-1" style="text-align: right;"><h4>From:</h4></div>
-                <div class="col-md-3"><h4><?php echo $locations[0]->getTownName();?><br>8.40 A.M</h4></div>
+                <div class="col-md-3"><h4><?php echo $locations[0]->getTownName();?><br><br><?php echo $journeyTime[0];?></h4></div>
                 <div class="col-md-2 " style="text-align: right;"><h4>To:</h4></div>
-                <div class="col-md-3"><h4><?php $locations=$route->getLocations();echo $locations[sizeof($locations)-1]->getTownName();?> <br>11.00 A.M</h4></div>
+                <div class="col-md-3"><h4><?php $locations=$route->getLocations();echo $locations[sizeof($locations)-1]->getTownName();?> <br><br><?php echo $journeyTime[1];?></h4></div>
             </div>
         </div>
         <div>
         </div>
     </div>
-    <form>
+    <form role="form" action="BookTicket.php" method="get">
         <input type="hidden" id="selectedSeats" name="selectedSeats" value=""/>
+        <input type="text" id="scheduleID" name="scheduleID" <?php echo 'value="'.$ScheduleID.'"'?>/>
+        <input type="hidden" id="fromTown" name="fromTown"  <?php echo 'value="'.$from->getTownID().'"' ?>/>
+        <input type="hidden" id="toTown" name="toTown" <?php echo 'value="'.$to->getTownID().'"' ?>"/>
         <div class="row">
             <div class="col-md-8">
                 <h3>Fill ticket details</h3>
                 <div class="col-md-12">
                     <div class="col-md-4"><h4>Name</h4></div>
                     <div class="input-group col-md-7">
-                        <input class="form-control" type="text" id="name" placeholder="Your name" style="margin-top:4px;width: 100%"/>
+                        <input class="form-control" type="text" id="name" name="name" placeholder="Your name" style="margin-top:4px;width: 100%"/>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="col-md-4"><h4>Email</h4></div>
                     <div class="input-group col-md-7">
-                        <input class="form-control" type="email" id="email" placeholder="Your email" style="margin-top:4px;width: 100%"/>
+                        <input class="form-control" type="email" id="email" name="email" placeholder="Your email" style="margin-top:4px;width: 100%"/>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -192,12 +222,14 @@ $distance=abs($from->getDistance()-$to->getDistance());
 
                     </div>
                 </div>
+
                 <div class="col-md-12">
                     <div class="col-md-4"><h4>From</h4></div>
                     <div class="input-group col-md-6">
                         <h4 ><?php echo $from->getTownName(); ?></h4>
                     </div>
                 </div>
+
                 <div class="col-md-12">
                     <div class="col-md-4"><h4>To</h4></div>
                     <div class="input-group col-md-6">
@@ -208,7 +240,7 @@ $distance=abs($from->getDistance()-$to->getDistance());
                 <div class="col-md-12">
                     <div class="col-md-4"><h4>Date</h4></div>
                     <div class="input-group col-md-2" >
-                        <p><input class="btn btn-default col-md-12" type="text" id="datepicker" style="position: relative; z-index: 100000;margin-top: 4px;text-align: left"></p>
+                        <h4 ><?php echo getDateFromTimeStamp($bookingSchedule->getFromInt());?></h4>
                     </div>
 
                 </div>
@@ -279,14 +311,17 @@ $distance=abs($from->getDistance()-$to->getDistance());
                     <div class="col-md-4"><h4>Total Cost</h4></div>
                     <div class="input-group col-md-3">
                         <h4 id="total">Rs. <?php echo $english_format_number?></h4>
+                        <input type="hidden" id="payment" name="payment" value="<?php echo $english_format_number?>"/>
                     </div>
                 </div>
 
                 <div style="text-align: right">
-                    <input class="btn btn-danger" type="submit" value="Confirm"/>
+                    <input class="btn btn-danger" type="submit" value="Confirm" onsubmit="validateForm()" />
                 </div>
             </div>
         </div>
+        <div class="form-group"><input class="form-control" type="hidden" id="post" name="post" value="1"/></div>
+
     </form>
     <br>
     <br>
@@ -294,20 +329,6 @@ $distance=abs($from->getDistance()-$to->getDistance());
 </div>
 <script type="text/javascript" src="../JS/BookTicket.js"></script>
 
-<script>
-    var date = new Date();
-    date.setDate(date.getDate() );
-    $("#datepicker").datepicker("setDate", date);
-    $("#datepicker").datepicker({
-        dateFormat: "yy-mm-dd",
-        defaultDate: date,
-        onSelect: function () {
-            selectedDate = $.datepicker.formatDate("yyyy-mm-dd", $(this).datepicker('getDate'));
-        }
-    });
-    $("#datepicker").val(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
 
-
-</script>
 </body>
 </html>

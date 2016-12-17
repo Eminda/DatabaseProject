@@ -10,10 +10,7 @@ include_once '../Modal/PhpClasses.php';
 
 class AdminDao
 {
-    public static $adminID="AdminID";
-    public static $name="Name";
-    public static $password="Password";
-    public static $costPerKm="CostPerKm";
+
     public function updateCostPerKm($conn, $admin)
     {
         $sql="UPDATE Admin SET CostPerKm=:cost";

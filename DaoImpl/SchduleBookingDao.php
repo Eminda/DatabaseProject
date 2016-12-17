@@ -10,7 +10,8 @@ include_once '../Modal/PhpClasses.php';
 class SchduleBookingDao
 {
     public function getScheduleData($conn,$scheduleID){
-        $sql="select RegNumber,PhoneNumber,NoSeat,Type,Wifi,HaveCurtains,FromTime,ToTime,FromTownName,ToTownName,Duration,Distance from BookingSchedule where ScheduleID=?";
+        echo "fh";
+        $sql="select RegNumber,PhoneNumber,NoSeat,Type,Wifi,HaveCurtains,FromTime,ToTime,FromTownName,ToTownName,Duration,Distance,FromInt,ToInt,FromDistance,ToDistance from BookingSchedule where ScheduleID=?";
         $stmt = $conn->prepare($sql);
 
         $stmt->bind_Param('s', $scheduleID);
@@ -19,7 +20,7 @@ class SchduleBookingDao
         $result = $stmt->get_result();
         $booking=null;
         while ($row = $result->fetch_assoc()) {
-            $booking=new SheduleBookingView($scheduleID,$row['RegNumber'],$row['PhoneNumber'],$row['NoSeat'],$row['Type'],$row['Wifi'],$row['HaveCurtains'],$row['FromTime'],$row['FromTownName'],$row['ToTime'],$row['ToTownName'],$row['Duration'],$row['Distance']);
+            $booking=new SheduleBookingView($scheduleID,$row['RegNumber'],$row['PhoneNumber'],$row['NoSeat'],$row['Type'],$row['Wifi'],$row['HaveCurtains'],$row['FromTime'],$row['FromTownName'],$row['ToTime'],$row['ToTownName'],$row['Duration'],$row['Distance'],$row['FromInt'],$row['ToInt'],$row['FromDistance'],$row['ToDistance']);
         }
 
         $stmt->free_result();
