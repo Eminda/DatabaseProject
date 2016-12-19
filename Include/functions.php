@@ -35,7 +35,13 @@ function getComputedTime($hour,$min){
     if(intval($hour)>12 || (intval($hour)==12 && intval($min)!=0)){
         $postFix=" P.M";
         $hour=intval($hour)-12;
+        if($hour==0){
+            $hour=12;
+        }
     }else{
+        if($hour==0){
+            $hour="00";
+        }
         $postFix=" A.M";
     }
     return "".$hour.".".$min.$postFix;
@@ -69,4 +75,5 @@ function getDateFromTimeStamp($time){
     list($day,$t)=explode(' ',date('Y-m-d h:i:s',$time+1800*9));
     return $day;
 }
+
 ?>

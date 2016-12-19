@@ -11,6 +11,7 @@ include_once '../DaoImpl/RouteLocationDao.php';
 include_once '../DaoImpl/AdminDao.php';
 include_once '../DaoImpl/BookingDao.php';
 include_once '../DaoImpl/BookingSeatDao.php';
+include_once '../DaoImpl/BookingSeatViewDao.php';
 
 class ScheduleBookingController
 {
@@ -19,6 +20,7 @@ class ScheduleBookingController
     private static $admin;
     private static $booking;
     private static $bookingSeat;
+    private static $bookingSeatView;
 
     private static function init()
     {
@@ -28,6 +30,7 @@ class ScheduleBookingController
             ScheduleBookingController::$admin = new AdminDao();
             ScheduleBookingController::$booking = new BookingDao();
             ScheduleBookingController::$bookingSeat = new BookingSeatDao();
+            ScheduleBookingController::$bookingSeatView=new BookingSeatViewDao();
         }
 
     }
@@ -35,7 +38,6 @@ class ScheduleBookingController
     public static function getBookingScheduleFromScheduleID($conn, $scheduleID)
     {
         self::init();
-        echo "ghj" . gettype(ScheduleBookingController::$scheduleBooking);
         return ScheduleBookingController::$scheduleBooking->getScheduleData($conn, $scheduleID);
     }
 
@@ -60,7 +62,6 @@ class ScheduleBookingController
             mysqli_autocommit($conn, FALSE);
             $conn->begin_transaction();
             $newTicket = base_convert(intval(base_convert($lastTicket, 16, 10)) + 1, 10, 16);
-            echo "aaaaaqqqqqqqqqqqqqqqqqqqqq".$newTicket."ddddddddddd".$lastTicket;
             $newTicket = "T" . str_pad($newTicket, 9, "0", STR_PAD_LEFT);
             $booking->setTicketNo($newTicket);
             ScheduleBookingController::$booking->insert($conn, $booking);
@@ -80,6 +81,30 @@ class ScheduleBookingController
 
             ScheduleBookingController::$booking->unlockBookingTable($conn);
         }
+    }
+    public static function getFirstScheduleInAGivenDate($conn,$RegNumber,$day){
+        self::init();
+        $temp= ScheduleBookingController::$scheduleBooking->getFirstBookingDataForSpecificDay($conn,$RegNumber,$day);
+        if($temp==null){
+            $temp=ScheduleBookingController::$scheduleBooking->getNearestBookingDataWithSpecifiDayBefore($conn,$RegNumber,$day);
+            if($temp==null){
+                $temp=ScheduleBookingController::$scheduleBooking->getNearestBookingDataWithSpecifiDayAfter($conn,$RegNumber,$day);
+            }
+        }
+        return $temp;
+    }
+
+    public static function getBookingsInAGivenSchedule($conn,$RouteID,$ScheduleID){
+        self::init();
+        return ScheduleBookingController::$bookingSeatView->getBookingsForScheduleID($conn,$RouteID,$ScheduleID);
+    }
+    public static function getNextBookingSchedule($conn,$RegNumber,$FromInt){
+        self::init();
+        return ScheduleBookingController::$scheduleBooking->getNextScheduleID($conn,$RegNumber,$FromInt);
+    }
+    public static function getBeforeSchedule($conn,$RegNumber,$FromInt){
+        self::init();
+        return ScheduleBookingController::$scheduleBooking->getBeforeScheduleID($conn,$RegNumber,$FromInt);
     }
 
 }

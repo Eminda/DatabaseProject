@@ -906,6 +906,245 @@ class BookingSeat{
 
 
 }
+class BookingSeatView{
+    private $ticketNo;
+    private $customerName;
+    private $nic;
+    private $email;
+    private $payment;
+    private $state;
+    private $fromTownID;
+    private $fromTownName;
+    private $fromTownDistance;
+    private $toTownID;
+    private $toTownName;
+    private $seat;
+
+    /**
+     * BookingSeatView constructor.
+     * @param $ticketNo
+     * @param $customerName
+     * @param $nic
+     * @param $email
+     * @param $payment
+     * @param $state
+     * @param $fromTownID
+     * @param $fromTownName
+     * @param $fromTownDistance
+     * @param $toTownID
+     * @param $toTownName
+     * @param $seat
+     */
+    public function __construct($ticketNo, $customerName, $nic, $email, $payment, $state, $fromTownID, $fromTownName, $fromTownDistance, $toTownID, $toTownName, $seat)
+    {
+        $this->ticketNo = $ticketNo;
+        $this->customerName = $customerName;
+        $this->nic = $nic;
+        $this->email = $email;
+        $this->payment = $payment;
+        $this->state = $state;
+        $this->fromTownID = $fromTownID;
+        $this->fromTownName = $fromTownName;
+        $this->fromTownDistance = $fromTownDistance;
+        $this->toTownID = $toTownID;
+        $this->toTownName = $toTownName;
+        $this->seat = $seat;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTicketNo()
+    {
+        return $this->ticketNo;
+    }
+
+    /**
+     * @param mixed $ticketNo
+     */
+    public function setTicketNo($ticketNo)
+    {
+        $this->ticketNo = $ticketNo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerName()
+    {
+        return $this->customerName;
+    }
+
+    /**
+     * @param mixed $customerName
+     */
+    public function setCustomerName($customerName)
+    {
+        $this->customerName = $customerName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNic()
+    {
+        return $this->nic;
+    }
+
+    /**
+     * @param mixed $nic
+     */
+    public function setNic($nic)
+    {
+        $this->nic = $nic;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPayment()
+    {
+        return $this->payment;
+    }
+
+    /**
+     * @param mixed $payment
+     */
+    public function setPayment($payment)
+    {
+        $this->payment = $payment;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param mixed $state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFromTownID()
+    {
+        return $this->fromTownID;
+    }
+
+    /**
+     * @param mixed $fromTownID
+     */
+    public function setFromTownID($fromTownID)
+    {
+        $this->fromTownID = $fromTownID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFromTownName()
+    {
+        return $this->fromTownName;
+    }
+
+    /**
+     * @param mixed $fromTownName
+     */
+    public function setFromTownName($fromTownName)
+    {
+        $this->fromTownName = $fromTownName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFromTownDistance()
+    {
+        return $this->fromTownDistance;
+    }
+
+    /**
+     * @param mixed $fromTownDistance
+     */
+    public function setFromTownDistance($fromTownDistance)
+    {
+        $this->fromTownDistance = $fromTownDistance;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToTownID()
+    {
+        return $this->toTownID;
+    }
+
+    /**
+     * @param mixed $toTownID
+     */
+    public function setToTownID($toTownID)
+    {
+        $this->toTownID = $toTownID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToTownName()
+    {
+        return $this->toTownName;
+    }
+
+    /**
+     * @param mixed $toTownName
+     */
+    public function setToTownName($toTownName)
+    {
+        $this->toTownName = $toTownName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSeat()
+    {
+        return $this->seat;
+    }
+
+    /**
+     * @param mixed $seat
+     */
+    public function setSeat($seat)
+    {
+        $this->seat = $seat;
+    }
+
+
+}
 class SheduleBookingView{
     private $scheduleID;
     private $regNumber;
@@ -927,6 +1166,7 @@ class SheduleBookingView{
     private $distance;
     private $toDistance;
     private $fromDistance;
+    private $routeID;
 
 
     /**
@@ -943,7 +1183,7 @@ class SheduleBookingView{
      * @param $toTime
      * @param $toTownName
      */
-    public function __construct($scheduleID, $regNumber, $phoneNumber, $noSeats, $type, $wifi, $haveCurtains, $fromTime, $fromTownName, $toTime, $toTownName,$duration,$distance,$fromInt,$toInt,$fromDistance,$toDistance)
+    public function __construct($scheduleID, $regNumber, $phoneNumber, $noSeats, $type, $wifi, $haveCurtains, $fromTime, $fromTownName, $toTime, $toTownName,$duration,$distance,$fromInt,$toInt,$fromDistance,$toDistance,$routeID)
     {
         $this->scheduleID = $scheduleID;
         $this->regNumber = $regNumber;
@@ -962,6 +1202,23 @@ class SheduleBookingView{
         $this->toInt=$toInt;
         $this->fromDistance=$fromDistance;
         $this->toDistance=$toDistance;
+        $this->routeID=$routeID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRouteID()
+    {
+        return $this->routeID;
+    }
+
+    /**
+     * @param mixed $routeID
+     */
+    public function setRouteID($routeID)
+    {
+        $this->routeID = $routeID;
     }
 
     /**

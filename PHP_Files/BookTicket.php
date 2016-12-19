@@ -8,17 +8,12 @@
 session_start();
 include_once '../Controller/ScheduleBookingController.php';
 
-echo 'sd';
 include_once '../Modal/PhpClasses.php';
-echo 'sd';
 require_once '../Include/header.php';
 //include '../Include/beforenav.php';
 require_once '../Include/functions.php';
 require '../Include/PublicConnect.php';
-echo var_dump($_GET);
-echo $_GET['name'];
-echo "<br>";
-echo $_GET['post'];
+
 if(isSet($_GET['post'])){
     if(isset($_GET['scheduleID']) && isset($_GET['name']) && isset($_GET['nic']) && isset($_GET['email']) && isset($_GET['payment']) && isset($_GET['fromTown']) && isset($_GET['toTown']) && isset($_GET['selectedSeats'])){
         $ScheduleID=$_GET['scheduleID'];
@@ -30,7 +25,6 @@ if(isSet($_GET['post'])){
         $To=$_GET['toTown'];
         $SelectedSeats=$_GET['selectedSeats'];
         $Seats=explode(',',$SelectedSeats);
-        echo "dfddddddddddddddddddddddddd".$Seats[0];
         $booking=new Booking($ScheduleID,$Name,$Nic,$Email,$Payment,$From,$To,$Seats);
 
             ScheduleBookingController::createBooking($conn, $booking);
@@ -191,7 +185,7 @@ $journeyTime=getJourneyTime($bookingSchedule->getDuration(),$bookingSchedule->ge
     </div>
     <form role="form" action="BookTicket.php" method="get">
         <input type="hidden" id="selectedSeats" name="selectedSeats" value=""/>
-        <input type="text" id="scheduleID" name="scheduleID" <?php echo 'value="'.$ScheduleID.'"'?>/>
+        <input type="hidden" id="scheduleID" name="scheduleID" <?php echo 'value="'.$ScheduleID.'"'?>/>
         <input type="hidden" id="fromTown" name="fromTown"  <?php echo 'value="'.$from->getTownID().'"' ?>/>
         <input type="hidden" id="toTown" name="toTown" <?php echo 'value="'.$to->getTownID().'"' ?>"/>
         <div class="row">
