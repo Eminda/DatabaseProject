@@ -3,7 +3,7 @@
  */
 //var date = $('#datepicker').datepicker({ dateFormat: 'yyyy-mm-d' }).val();
 var list = [];
-var availableSeats = [1, 2, 4, 5, 6, 7, 8, 10, 12, 15, 16, 18, 20, 21, 22, 25, 30, 31, 40, 43, 45, 50, 53];
+
 var selectedSeats=[];
 var copyOfAllSeats=availableSeats.slice();
 var selectedSeatCount=0;
@@ -70,11 +70,45 @@ function callcualatePayment(){
     $('#payment').val((numSeat*cost).toFixed(2));
     $('#selectedSeats').val(selectedSeats.toString());
 }
-function validateForm(){
+function validateForm() {
 
-    if(parseInt($('#ticketCount').val())!=selectedSeats.length){
-        alert('You must select seat numbers fot the tickets');
+
+    var nicE = document.getElementById("nic");
+    var nameE = document.getElementById("name");
+    var emailE = document.getElementById("email");
+    var error = "";
+    if (parseInt($('#ticketCount').val()) != selectedSeats.length) {
+        error = 'You must select seat numbers fot the tickets\n';
+    }
+
+    var nic = $('#nic').val();
+    var name = $('#name').val();
+
+    if (nicE.value.toString() == '' || nic.length !== 9) {
+        error += "You must enter a valid nic\n";
+        nicE.className += " alert-danger";
+    } else {
+        nicE.className = " form-control";
+
+    }
+    if (nameE.value.toString() == "") {
+        error += "Name must be entered and can not exceed length\n";
+        nameE.className += " alert-danger";
+    } else {
+        nameE.className = "form-control";
+    }
+    if (emailE.value.toString() == "") {
+        error += "Email must be entered\n";
+        emailE.className += " alert-danger";
+    } else {
+        emailE.className = "form-control";
+    }
+    if (error != "") {
+        alert(error);
         return false;
     }
+
     return true;
+
 }
+

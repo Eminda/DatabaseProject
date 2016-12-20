@@ -22,4 +22,33 @@ class BookingSeatDao
             throw new Exception('My SQl Error');
         };
     }
+    public function getAvailableSeats($conn,$SeatNum,$ScheduleID){
+
+        $availableSeats=array();
+
+
+        if (!($stmt = $conn->prepare("CALL getSeatInBus(?,?)"))) {
+            echo "Prepare failed: (" . $conn->errno . ") " . $conn->error;
+        }
+
+        $stmt->bind_Param('ds', $SeatNum,$ScheduleID);
+        if (!$stmt->execute()) {
+            echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+        }
+
+        do {
+
+            $id_out = NULL;
+            if (!$stmt->bind_result($id_out)) {
+                echo "Bind failed: (" . $stmt->errno . ") " . $stmt->error;
+            }
+
+            while ($stmt->fetch()) {
+                array_push($availableSeats,$id_out);
+            }
+        } while ($stmt->more_results() && $stmt->next_result());
+
+        return $availableSeats;
+    }
 }
+

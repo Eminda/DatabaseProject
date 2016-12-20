@@ -17,6 +17,9 @@ class BookingDao
         $stmt = $conn->prepare($sql);
         $stmt->bind_Param('ssssssss', $booking->getTicketNo(),$booking->getScheduleID(),$booking->getCustomerName(),$booking->getNic(),$booking->getEmail(),$booking->getPayment(),$booking->getFromLocation(),$booking->getToLocation());
         $stmt->execute();
+        if(mysqli_error($conn)!=null){
+            throw new Exception('My SQl Error');
+        };
         return true;
     }
     public function updateRefundForSpecificTicket($conn,$TicketNo){

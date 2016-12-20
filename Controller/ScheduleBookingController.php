@@ -47,6 +47,7 @@ class ScheduleBookingController
         return ScheduleBookingController::$routeLocation->getRouteLocation($conn, $routeID, $fromTownID, $toTownID);
     }
 
+
     public static function getCostPerKm($conn)
     {
         self::init();
@@ -106,6 +107,16 @@ class ScheduleBookingController
         self::init();
         return ScheduleBookingController::$scheduleBooking->getBeforeScheduleID($conn,$RegNumber,$FromInt);
     }
+    public static function getBookingInTheExactDate($conn,$RegNumber,$day){
+        self::init();
+        $temp= ScheduleBookingController::$scheduleBooking->getFirstBookingDataForSpecificDay($conn,$RegNumber,$day);
+        return $temp;
+    }
+    public static function getAvailableSeats($conn,$Seat,$ScheduleID){
+        self::init();
+        return ScheduleBookingController::$bookingSeat->getAvailableSeats($conn,$Seat,$ScheduleID);
+    }
+
 
 }
 

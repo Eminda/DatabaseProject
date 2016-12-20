@@ -15,7 +15,7 @@
 
        <div class="row vertical-center-row" >
            <H1 class="text-center" style="background-color: #bae3e1;">Bus Owner Registraion Forum</H1>
-           <form id="myForm" class="col-md-12" style="padding-top:30px;background-color: #bae6f1;" onsubmit="return submitData()">
+           <form id="myForm" class="col-md-12" style="padding-top:30px;background-color: #bae6f1;" onsubmit="return submitData()" >
                <div class="input-div">
                     <div >
                         <div class="col-md-3">
@@ -66,7 +66,7 @@
                            <label class="control-label" style="font-size: larger;padding-top: 4px;">Password</label>
                        </div>
                        <div class="input-group col-md-5">
-                           <input id="password" type="password" class="form-control" name="password" placeholder="Enter Password">
+                           <input id="password" type="password" class="form-control" name="password" placeholder="Enter Password" onkeyup="checkPassword();">
                        </div>
                    </div>
                </div>

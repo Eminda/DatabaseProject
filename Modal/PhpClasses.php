@@ -10,6 +10,23 @@ class User
 {
     private $userName;
     private $password;
+    private $type;
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
 
     /**
      * @return mixed
@@ -46,9 +63,45 @@ class User
 class BusOwner extends User{
     private $ID;
     private $name;
+    private $userName;
     private $nic;
     private $email;
     private $buses;
+
+    /**
+     * BusOwner constructor.
+     * @param $ID
+     * @param $name
+     * @param $userName
+     * @param $nic
+     * @param $email
+     * @param $buses
+     */
+    public function __construct($ID, $name, $userName, $nic, $email, $buses)
+    {
+        $this->ID = $ID;
+        $this->name = $name;
+        $this->userName = $userName;
+        $this->nic = $nic;
+        $this->email = $email;
+        $this->buses = $buses;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserName()
+    {
+        return $this->userName;
+    }
+
+    /**
+     * @param mixed $userName
+     */
+    public function setUserName($userName)
+    {
+        $this->userName = $userName;
+    }
 
     /**
      * @return mixed
@@ -1183,7 +1236,7 @@ class SheduleBookingView{
      * @param $toTime
      * @param $toTownName
      */
-    public function __construct($scheduleID, $regNumber, $phoneNumber, $noSeats, $type, $wifi, $haveCurtains, $fromTime, $fromTownName, $toTime, $toTownName,$duration,$distance,$fromInt,$toInt,$fromDistance,$toDistance,$routeID)
+    public function __construct($scheduleID, $regNumber, $phoneNumber, $noSeats, $type, $wifi, $haveCurtains, $fromTime, $fromTownName, $toTime, $toTownName,$duration,$distance,$fromInt,$toInt,$fromDistance,$toDistance,$routeID,$fromTownID,$toTownID)
     {
         $this->scheduleID = $scheduleID;
         $this->regNumber = $regNumber;
@@ -1203,6 +1256,8 @@ class SheduleBookingView{
         $this->fromDistance=$fromDistance;
         $this->toDistance=$toDistance;
         $this->routeID=$routeID;
+        $this->fromTownID=$fromTownID;
+        $this->toTownID=$toTownID;
     }
 
     /**
