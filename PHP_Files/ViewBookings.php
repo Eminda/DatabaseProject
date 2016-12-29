@@ -31,7 +31,7 @@ if (isset($_GET["RegNumber"])) {
     $beforeBooking = null;
     $inverse = false;
     list($day, $time) = explode(' ', date('Y-m-d H:i:s'));
-    echo $day;
+
     if ($ScheduleID == null)
         if ($Date == null)
             $Schedule = ScheduleBookingController::getFirstScheduleInAGivenDate($conn, $RegNumber, $day);
@@ -122,6 +122,7 @@ if (isset($_GET["RegNumber"])) {
             <div class="carousel-inner" role="listbox">
                 <?php
                 $st=' active';
+
                 foreach ($images as $image){
                     echo '<div class="item'.$st.'">
                     <img src="../Image/'.$image.'" alt="Chania" width="800px" height=500px>

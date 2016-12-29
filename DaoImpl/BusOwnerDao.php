@@ -9,12 +9,13 @@
 class BusOwnerDao
 {
     public function insertBusOwner($conn,$busOwner){
+        echo "dddd".$busOwner->getID()."insert into BusOwner VALUES ('".$busOwner->getID()."','".$busOwner->getName()."','".$busOwner->getUserName()."',(select password('".$busOwner->getPassword()."')),'".$busOwner->getNic()."','".$busOwner->getEmail()."')";
         $sql="insert into BusOwner VALUES (?,?,?,(select password(?)),?,?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_Param('ssssss',$busOwner->getID(),$busOwner->getName(),$busOwner->getUserName(),$busOwner->getPassword(),$busOwner->getNic(),$busOwner->getEmail());
         $stmt->execute();
         if(mysqli_errno($conn)!=null){
-            return mysqli_connect_error($conn);
+            return mysqli_errno($conn);
         }
         return "Suceed";
     }

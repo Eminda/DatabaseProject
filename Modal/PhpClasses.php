@@ -67,6 +67,7 @@ class BusOwner extends User{
     private $nic;
     private $email;
     private $buses;
+    private $password;
 
     /**
      * BusOwner constructor.
@@ -85,6 +86,22 @@ class BusOwner extends User{
         $this->nic = $nic;
         $this->email = $email;
         $this->buses = $buses;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
     }
 
     /**

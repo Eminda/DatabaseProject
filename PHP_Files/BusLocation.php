@@ -18,6 +18,7 @@ if(isset($_GET['RegNumber'])){
     $RegNumber=$_GET['RegNumber'];
     $Time=getActualTime();
     $Point=ScheduleBookingController::getNearestLocation($conn,$RegNumber,$Time);
+    echo $Point;
     $Time=getDayBefore();
     $Schedules=ScheduleBookingController::getNearestTenSchedules($conn,$RegNumber,$Time);
 }else{

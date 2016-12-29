@@ -19,7 +19,8 @@ $userNames=UserController::getAllUsers($conn);
 $re=null;
 if(isset($_GET['name'])){
     if(isset($_GET['userName']) && isset($_GET['nic']) && isset($_GET['email']) && isset($_GET['password'])){
-        $busOwner=new BusOwner(null,$_GET['name'],$_GET['userName'],$_GET['nic'],$_GET['email'],$_GET['password']);
+        $busOwner=new BusOwner(null,$_GET['name'],$_GET['userName'],$_GET['nic'],$_GET['email'],null);
+        $busOwner->setPassword($_GET['password']);
         $re=UserController::createBusOwner($conn,$busOwner);
     }else{
         echo "Invalid Data Input For the page";
@@ -46,6 +47,9 @@ if(isset($_GET['name'])){
         }
         if($re=="Suceed"){
             echo "userNames.push('".$_GET['userName']."');";
+        }else{
+            if($re!=null){
+            echo "alert('NIC must be unique')";}
         }
         echo "</script>";
 

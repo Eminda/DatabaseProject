@@ -34,8 +34,10 @@ class UserController
             $re=UserController::$busOwner->insertBusOwner($conn, $busOwner);
             UserController::$busOwner->unlockBookingTable($conn);
             if($re=='Suceed') {
+                echo "fff";
                 mysqli_commit($conn);
             }else{
+                echo $re;
                 mysqli_rollback($conn);
             }
 
