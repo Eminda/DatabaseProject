@@ -158,7 +158,7 @@ if (isset($_GET["RegNumber"])) {
         <br>
     </div>
     <div class="row" style="text-align: center;background-color: #122b40;color:white;font-size:13pt">
-        <div class="col-md-2">BE-1922</div>
+        <div class="col-md-2">BE-1932</div>
         <div class="col-md-2"><span><i class="glyphicon glyphicon-check"></i>&nbspSemi Luxiary</span></div>
         <div class="col-md-2"><span><i class="glyphicon glyphicon-check"></i>&nbspWifi</span></div>
         <div class="col-md-2"><span><i class="glyphicon glyphicon-check"></i>&nbspCourtains</span></div>
