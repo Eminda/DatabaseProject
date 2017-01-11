@@ -10,7 +10,6 @@ include_once '../Modal/PhpClasses.php';
 
 class AdminDao
 {
-
     public function updateCostPerKm($conn, $admin)
     {
         $sql="UPDATE Admin SET CostPerKm=:cost";
