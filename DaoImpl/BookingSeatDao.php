@@ -35,9 +35,7 @@ class BookingSeatDao
         if (!$stmt->execute()) {
             echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
         }
-
         do {
-
             $id_out = NULL;
             if (!$stmt->bind_result($id_out)) {
                 echo "Bind failed: (" . $stmt->errno . ") " . $stmt->error;
