@@ -5,8 +5,9 @@
  * Date: 20/12/2016
  * Time: 01:22 AM
  */
-
+//Season is the bond between client and server
 session_start();
+//include is used to tell we need these php classes loaded before this php load. We may need their methods
 include_once '../Controller/UserController.php';
 
 include_once '../Modal/PhpClasses.php';
@@ -14,12 +15,16 @@ require_once '../Include/header.php';
 //include '../Include/beforenav.php';
 require_once '../Include/functions.php';
 require '../Include/PublicConnect.php';
-
+//$ is symbol to create varriable
+//UserController is a class
+//getAllUsers is a static method
+//If instance method use -> to get method. :: for static (class things)
 $userNames=UserController::getAllUsers($conn);
 $re=null;
 if(isset($_GET['name'])){
     if(isset($_GET['userName']) && isset($_GET['nic']) && isset($_GET['email']) && isset($_GET['password'])){
         $busOwner=new BusOwner(null,$_GET['name'],$_GET['userName'],$_GET['nic'],$_GET['email'],null);
+        //accsess instance method
         $busOwner->setPassword($_GET['password']);
         $re=UserController::createBusOwner($conn,$busOwner);
     }else{
@@ -28,6 +33,7 @@ if(isset($_GET['name'])){
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -176,6 +182,11 @@ if(isset($_GET['name'])){
 </body>
 <?php
 if($re!=null && $re=="Suceed"){
+    //We have created a javascript in html page. Only echo out will go to client
+    /*
+     * <script>alert('Sucessfully BusOwner Created!!');</script>
+     * above is what client sees
+     */
     echo "<script>alert('Sucessfully BusOwner Created!!');</script>";
 }else if($re!=null){
     echo "<script>alert('Sucessfully BusOwner Creation failed!!');</script>";
